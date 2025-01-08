@@ -32,7 +32,7 @@ const registerController = async (req, res) => {
 
 
     res.status(201).json({
-      message: `Registered successfully as ${userType}. ${
+      message: `Registered successfully as ${userType}.${
         userType === "EMP" ? "Profile is under review." : ""
       }`,
       user: {response},
@@ -42,6 +42,8 @@ const registerController = async (req, res) => {
     res.status(500).json({ message: `Error registering as ${userType}`, error: error.message });
   }
 };
+
+
 
 
 module.exports = { registerController};
