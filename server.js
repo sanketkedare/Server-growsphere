@@ -5,8 +5,22 @@ const app = require('./src/app'); // Import the Express app
 const connectToDatabase = require('./src/Utils/connectToDB');
 
 configDotenv(); // Load environment variables
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse incoming JSON request bodies
+
+// Define allowed origins
+const allowedOrigins = ['https://growsphere.onrender.com', 'http://localhost:5173'];
+
+// Configure CORS to allow only specified origins
+app.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
+
+app.use(express.json()); 
 
 const PORT = process.env.PORT || 3001;
 

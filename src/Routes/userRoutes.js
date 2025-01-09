@@ -5,7 +5,19 @@ const cors = require('cors');
 
 const userRouter = express.Router();
 userRouter.use(express.json());
-userRouter.use(cors())
+// Define allowed origins
+const allowedOrigins = ['https://growsphere.onrender.com', 'http://localhost:5173'];
+
+// Configure CORS to allow only specified origins
+userRouter.use(cors({
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    }
+}));
 
 // Register a new user (Company, Invester, or Employee)
 userRouter.post("/register", registerController);
