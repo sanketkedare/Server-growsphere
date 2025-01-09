@@ -12,7 +12,6 @@ app.get('/', (req, res) => {
 });
 
 app.use('/user', userRouter);
-
 app.use('/company', companyRouter);
 
 module.exports = app;
