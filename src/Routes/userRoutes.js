@@ -21,7 +21,7 @@ userRouter.use(cors({
 
 // Register a new user (Company, Invester, or Employee)
 userRouter.post("/register", registerController);
-userRouter.post('/profile/:id', profileController );
+userRouter.post('/profile', profileController );
 userRouter.put('/profile/:id', updateUserController)
 
 

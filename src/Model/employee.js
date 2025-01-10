@@ -10,6 +10,12 @@ const EmployeeSchema = new Schema(
     password: {
       String,
     },
+    imageUrl: {
+      String,
+    },
+    location: {
+      String,
+    },
 
     granted: {
       type: Boolean,

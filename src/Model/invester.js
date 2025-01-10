@@ -14,6 +14,10 @@ const InvesterSchema = new Schema({
     trim: true, // Remove unnecessary spaces
     lowercase: true, // Save emails in lowercase
   },
+  password:{
+    type: String,
+    default: "NOT SET"
+  },
 
   name: {
     type: String, // Optional field for investor's name

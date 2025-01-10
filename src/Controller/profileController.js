@@ -4,21 +4,15 @@ const Invester = require("../Model/invester");
 const { INVESTER, COMPANY, EMPLOYEE } = require("../Utils/constants");
 
 const profileController = async (req, res) => {
-  const { id } = req.params;
-  const { userType } = req.body;
+  const { email } = req.body;
   try {
-    let userData;
-    if (userType === INVESTER) {
-      userData = await Invester.findById({ _id: id });
-    } else if (userType === COMPANY) {
-      userData = await Company.findById({ _id: id });
-    } else if (userType === EMPLOYEE) {
-      userData = await Employee.findById({ _id: id });
-    } else {
-      return res.status(400).json({ message: "Invalid 'userType'" });
-    }
+    const userData =
+      (await Invester.findOne({ email })) ||
+      (await Company.findOne({ email })) ||
+      (await Employee.findOne({ email }));
+
     if (!userData) throw new Error("User not found");
-    res.status(200).send(user);
+    res.status(200).json(userData);
   } catch (error) {
     res.status(404).json({ success: false, message: error.message });
   }
@@ -28,7 +22,7 @@ const updateUserController = async (req, res) => {
   const { id } = req.params;
   const body = req.body;
 
-  // Validate if 'email' and 'userType' exist
+  // Validate if 'userType' exist
   if (!body.userType) {
     return res
       .status(400)
