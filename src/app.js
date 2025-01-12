@@ -2,6 +2,7 @@ const express = require('express');
 const userRouter = require('./Routes/userRoutes');
 const cors = require('cors');
 const companyRouter = require('./Routes/companyRouter');
+const investmentsRouter = require('./Routes/investmentsRoutes');
 const app = express();
 
 const allowedOrigins = ['https://growsphere.onrender.com', 'http://localhost:5173'];
@@ -18,11 +19,11 @@ app.use(cors({
 }));
 
 app.get('/', (req, res) => {
-    console.log("Called");
     res.status(200).json({ message: "App is working fine...!" });
 });
 
 app.use('/user', userRouter);
 app.use('/company', companyRouter);
+app.use('/investments', investmentsRouter);
 
 module.exports = app;
