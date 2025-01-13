@@ -1,66 +1,76 @@
 const { Schema, model } = require("mongoose");
 
 const InvestmentSchema = new Schema(
-    {
+  {
+    investmentNumber: {
       investerId: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
       },
       companyId: {
-        type: Schema.Types.ObjectId,
+        type: String,
         required: true,
       },
-      massages: {
-        type: [String],
-        default: null,
+    },
+    massages: {
+      type: [String],
+      default: null,
+    },
+    meeting: {
+      type: {
+        link: {
+          type: String,
+          default: null,
+        },
+        timeSlots: {
+          type: Object,
+          default: {},
+        },
       },
-      meeting: {
-        type: {
-          link:{
-            type: String,
-            default : null
+      default: null,
+    },
+    progress: {
+      type: String,
+      enum: ["Pending", "Approved", "Rejected", "In Progress", "Completed"],
+      default: "Pending",
+    },
+    payments: {
+      type: [
+        {
+          amount: {
+            type: Number,
+            required: false, // Make amount optional
           },
-          timeSlots:{
-            type: Object,
-            default: {}
+          date: {
+            type: Date,
+            required: false, // Make date optional
+          },
+          method: {
+            type: String,
+            enum: ["Bank Transfer", "Credit Card", "Cash", "Other"],
+            default: "Bank Transfer",
+          },
+          status: {
+            type: String,
+            enum: ["Pending", "Completed", "Failed"],
+            default: "Pending",
           },
         },
-        default: null,
-      },
-      progress: {
-        type: String,
-        enum: ["Pending", "Approved", "Rejected", "In Progress", "Completed"],
-        default: "Pending",
-      },
-      payments: {
-        type: [
-          {
-            amount: {
-              type: Number,
-              required: false, // Make amount optional
-            },
-            date: {
-              type: Date,
-              required: false, // Make date optional
-            },
-            method: {
-              type: String,
-              enum: ["Bank Transfer", "Credit Card", "Cash", "Other"],
-              default: "Bank Transfer",
-            },
-            status: {
-              type: String,
-              enum: ["Pending", "Completed", "Failed"],
-              default: "Pending",
-            },
-          },
-        ],
-        default: [], // Default to an empty array
-      },
+      ],
+      default: [], // Default to an empty array
     },
-    { timestamps: true }
-  );
-  
-  const Investments = model('Investments', InvestmentSchema);
+  },
+  { timestamps: true }
+);
 
-  module.exports = Investments
+// Create a compound index for investerId and companyId
+InvestmentSchema.index(
+  {
+    "investmentNumber": 1
+  },
+  { unique: true }
+);
+
+const Investments = model("Investments", InvestmentSchema);
+
+module.exports = Investments;

@@ -12,7 +12,11 @@ const getAllInvestments = async (req, res) => {
 const getInvestmentsByCompany = async (req, res) => {
   try {
     const { companyId } = req.params;
-    const investments = await Investments.find({ companyId });
+    console.log(companyId);
+
+    const investments = await Investments.find({
+      "investmentNumber.companyId": companyId,
+    });
     if (investments.length === 0) {
       return res
         .status(404)
@@ -26,12 +30,14 @@ const getInvestmentsByCompany = async (req, res) => {
 
 const getInvestmentsByInvester = async (req, res) => {
   try {
-    const { investerId } = req.params;
-    const investments = await Investments.find({ investerId });
+    const { investorId } = req.params;
+    const investments = await Investments.find({
+      "investmentNumber.investorId": investorId,
+    });
     if (investments.length === 0) {
       return res
         .status(404)
-        .json({ message: "No investments found for this invester" });
+        .json({ message: "No investments found for this investor" });
     }
     res.status(200).json(investments);
   } catch (error) {
@@ -40,31 +46,33 @@ const getInvestmentsByInvester = async (req, res) => {
 };
 
 const createInvestment = async (req, res) => {
-    
   try {
     const data = req.body;
-    // Validate required fields
-    if (!data.investerId || !data.companyId) {
-      return res
-        .status(400)
-        .json({ message: "Invester ID and Company ID are required" });
+
+    // Validate the presence of investmentNumber and its nested fields
+    if (!data.investmentNumber) {
+      return res.status(400).json({
+        message: "investmentNumber with investerId and companyId is required",
+      });
     }
 
     // Create a new investment document
-    const newInvestment = new Investments(data);
-
-    // Save to the database
-    const savedInvestment = await newInvestment.save();
-    res
-      .status(201)
-      .json({
-        message: "Investment created successfully",
-        investment: savedInvestment,
-      });
+    const newInvestment = await Investments.create(data);
+    res.status(201).json({
+      message: "Investment created successfully",
+      investment: newInvestment,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Failed to create investment", error });
+    // Handle unique constraint error (duplicate investerId and companyId)
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Your investment with this company is already in progress" });
+    }
+
+    // Handle other errors
+    res.status(500).json({ message: "Failed to create investment", error: error.message });
   }
 };
+
 
 const updateInvestment = async (req, res) => {
   try {
@@ -84,16 +92,15 @@ const updateInvestment = async (req, res) => {
       { new: true, runValidators: true } // Return the updated document and validate schema
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Investment updated successfully",
-        investment: updatedInvestment,
-      });
+    res.status(200).json({
+      message: "Investment updated successfully",
+      investment: updatedInvestment,
+    });
   } catch (error) {
     res.status(500).json({ message: "Failed to update investment", error });
   }
 };
+
 module.exports = {
   getAllInvestments,
   getInvestmentsByCompany,
