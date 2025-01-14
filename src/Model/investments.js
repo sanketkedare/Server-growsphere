@@ -14,7 +14,7 @@ const InvestmentSchema = new Schema(
     },
     massages: {
       type: [String],
-      default: null,
+      default: [],
     },
     meeting: {
       type: {

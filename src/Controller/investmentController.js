@@ -78,6 +78,7 @@ const updateInvestment = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
+    console.log(id, updateData)
 
     // Validate if the investment exists
     const existingInvestment = await Investments.findById(id);

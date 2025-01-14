@@ -18,6 +18,7 @@ const profileController = async (req, res) => {
   }
 };
 
+
 const updateUserController = async (req, res) => {
   const { id } = req.params;
   const body = req.body;

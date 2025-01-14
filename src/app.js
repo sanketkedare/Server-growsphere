@@ -3,7 +3,10 @@ const userRouter = require('./Routes/userRoutes');
 const cors = require('cors');
 const companyRouter = require('./Routes/companyRouter');
 const investmentsRouter = require('./Routes/investmentsRoutes');
+const investerRouter = require('./Routes/investerRoutes');
 const app = express();
+
+app.use(express.json())
 
 const allowedOrigins = ['https://growsphere.onrender.com', 'http://localhost:5173'];
 
@@ -24,6 +27,7 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter);
 app.use('/company', companyRouter);
+app.use('/invester', investerRouter)
 app.use('/investments', investmentsRouter);
 
 module.exports = app;
