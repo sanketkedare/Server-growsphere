@@ -3,12 +3,20 @@ const Invester = require("../Model/invester");
 
 const investerRouter = express.Router();
 
+const mongoose = require("mongoose");
+
 investerRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
 
+    console.log(id);
+    // Validate ID format
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid ID format" });
+    }
+
     // Fetch data from the database
-    const data = await Invester.findById({ _id: id });
+    const data = await Invester.findById(id);
 
     // Check if data exists
     if (!data) {
@@ -22,5 +30,6 @@ investerRouter.get("/:id", async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
 
 module.exports = investerRouter;
