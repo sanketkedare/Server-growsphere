@@ -3,36 +3,50 @@ const Employee = require("../Model/employee");
 const Company = require("../Model/company");
 const Invester = require("../Model/invester");
 
-// Register Controller
 const registerController = async (req, res) => {
   const { userType, data } = req.body;
 
   try {
+    if (!userType || !data || !data.email) {
+      return res
+        .status(400)
+        .json({ message: "userType and email are required." });
+    }
+
     const { email, ...rest } = data;
 
-    // Check if email already exists
     let existingUser =
       (await Invester.findOne({ email })) ||
       (await Company.findOne({ email })) ||
       (await Employee.findOne({ email }));
 
     if (existingUser) {
-      return res
-        .status(409)
-        .json({
-          message: "Email already exists. Please log in.",
-          existingUser,
-        });
+      return res.status(409).json({
+        message: "Email already exists. Please log in.",
+        existingUser,
+      });
     }
 
-    // Create user based on userType
     let response;
     if (userType === COMPANY) {
-      response = await Company.create({ userType, email, ...rest });
+      response = await Company.create({
+        userType,
+        email,
+        password: email,
+        ...rest,
+      });
     } else if (userType === INVESTER) {
-      response = await Invester.create({ userType, email, ...rest });
+      response = await Invester.create({
+        userType,
+        email,
+        ...rest,
+      });
     } else {
-      response = await Employee.create({ userType, email, ...rest });
+      response = await Employee.create({
+        userType,
+        email,
+        ...rest,
+      });
     }
 
     res.status(201).json({
@@ -42,13 +56,34 @@ const registerController = async (req, res) => {
       user: { response },
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: `Error registering as ${userType}`,
-        error: error.message,
-      });
+    console.error(error); // Log the full error for debugging
+    res.status(500).json({
+      message: `Error registering as ${userType}`,
+      error: error.message,
+    });
   }
 };
 
-module.exports = { registerController };
+const registerAll = async (req, res) => {
+  try {
+    const companies = req.body;
+
+    const savedCompanies = [];
+    for (let companyData of companies) {
+      const company = new Company(companyData);
+      await company.save(); // This triggers the pre-save hook
+      savedCompanies.push(company);
+    }
+
+    res
+      .status(201)
+      .json({ message: "Created successfully", response: savedCompanies });
+  } catch (error) {
+    console.error(error); // Log the full error for debugging
+    res
+      .status(500)
+      .json({ message: "Error while registering companies", error });
+  }
+};
+
+module.exports = { registerController, registerAll };

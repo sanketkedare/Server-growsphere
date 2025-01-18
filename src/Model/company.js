@@ -17,6 +17,7 @@ const CompanySchema = new Schema({
     },
     password: {
         type: String, // Define the type for the password
+        required:true
     },
     name: {
         type: String,

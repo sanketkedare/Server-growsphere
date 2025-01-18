@@ -44,7 +44,6 @@ const InvesterSchema = new Schema(
       phone: {
         type: String, // Phone number
         default: "NOT SET",
-        match: [/^\d{10}$/, "Phone number must be 10 digits"], // Basic phone number validation
       },
       location: {
         type: String, // Investor's location

@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerController} = require("../Controller/authController");
+const { registerController, registerAll} = require("../Controller/authController");
 const {profileController, updateUserController} = require("../Controller/profileController");
 const cors = require('cors');
 
@@ -21,6 +21,7 @@ userRouter.use(cors({
 
 // Register a new user (Company, Invester, or Employee)
 userRouter.post("/register", registerController);
+userRouter.post("/register-all", registerAll);
 userRouter.post('/profile', profileController );
 userRouter.put('/profile/:id', updateUserController)
 
