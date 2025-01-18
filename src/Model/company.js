@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
+const bcrypt = require("bcrypt");
 
 // Define the Company schema
 const CompanySchema = new Schema({
@@ -14,8 +15,8 @@ const CompanySchema = new Schema({
         trim: true, // Remove unnecessary spaces
         lowercase: true, // Save emails in lowercase
     },
-    password:{
-        String
+    password: {
+        type: String, // Define the type for the password
     },
     name: {
         type: String,
@@ -74,6 +75,32 @@ const CompanySchema = new Schema({
     },
 }, { timestamps: true }); // Add timestamps for createdAt and updatedAt
 
+// Pre-save hook for password encryption
+CompanySchema.pre("save", async function (next) {
+    const user = this;
+  
+    // Only hash the password if it has been modified or is new
+    if (!user.isModified("password")) return next();
+  
+    try {
+        // Generate a salt
+        const salt = await bcrypt.genSalt(10);
+  
+        // Hash the password using the salt
+        user.password = await bcrypt.hash(user.password, salt);
+  
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+  
+// Method to compare passwords during login
+CompanySchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+// Create and export the Company model
 const Company = mongoose.model('Company', CompanySchema);
 
 module.exports = Company;

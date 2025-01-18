@@ -12,7 +12,6 @@ const getAllInvestments = async (req, res) => {
 const getInvestmentsByCompany = async (req, res) => {
   try {
     const { companyId } = req.params;
-    console.log(companyId);
 
     const investments = await Investments.find({
       "investmentNumber.companyId": companyId,
@@ -78,7 +77,6 @@ const updateInvestment = async (req, res) => {
   try {
     const { id } = req.params;
     const updateData = req.body;
-    console.log(id, updateData)
 
     // Validate if the investment exists
     const existingInvestment = await Investments.findById(id);

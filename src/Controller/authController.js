@@ -17,7 +17,12 @@ const registerController = async (req, res) => {
       (await Employee.findOne({ email }));
 
     if (existingUser) {
-      return res.status(409).json({ message: "Email already exists. Please log in." , existingUser});
+      return res
+        .status(409)
+        .json({
+          message: "Email already exists. Please log in.",
+          existingUser,
+        });
     }
 
     // Create user based on userType
@@ -30,20 +35,20 @@ const registerController = async (req, res) => {
       response = await Employee.create({ userType, email, ...rest });
     }
 
-
     res.status(201).json({
       message: `Registered successfully as ${userType}.${
         userType === "EMP" ? "Profile is under review." : ""
       }`,
-      user: {response},
+      user: { response },
     });
   } catch (error) {
-    console.error("Error during registration:", error);
-    res.status(500).json({ message: `Error registering as ${userType}`, error: error.message });
+    res
+      .status(500)
+      .json({
+        message: `Error registering as ${userType}`,
+        error: error.message,
+      });
   }
 };
 
-
-
-
-module.exports = { registerController};
+module.exports = { registerController };
