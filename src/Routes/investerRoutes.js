@@ -8,7 +8,6 @@ const mongoose = require("mongoose");
 investerRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-
     console.log(id);
     // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -16,7 +15,7 @@ investerRouter.get("/:id", async (req, res) => {
     }
 
     // Fetch data from the database
-    const data = await Invester.findById(id);
+    const data = await Invester.findOne({_id : id});
 
     // Check if data exists
     if (!data) {

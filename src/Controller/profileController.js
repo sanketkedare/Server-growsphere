@@ -24,7 +24,7 @@ const updateUserController = async (req, res) => {
   const body = req.body;
 
   // Validate if 'userType' exist
-  if (!body.userType) {
+  if (!body.userType && !body.email) {
     return res
       .status(400)
       .json({ message: "Invalid input: 'email' and 'userType' are required" });
