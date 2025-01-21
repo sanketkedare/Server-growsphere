@@ -56,7 +56,6 @@ const registerController = async (req, res) => {
       user: { response },
     });
   } catch (error) {
-    console.error(error); // Log the full error for debugging
     res.status(500).json({
       message: `Error registering as ${userType}`,
       error: error.message,
@@ -79,7 +78,6 @@ const registerAll = async (req, res) => {
       .status(201)
       .json({ message: "Created successfully", response: savedCompanies });
   } catch (error) {
-    console.error(error); // Log the full error for debugging
     res
       .status(500)
       .json({ message: "Error while registering companies", error });

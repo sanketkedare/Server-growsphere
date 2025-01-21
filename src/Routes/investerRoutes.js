@@ -8,7 +8,6 @@ const mongoose = require("mongoose");
 investerRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     // Validate ID format
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ message: "Invalid ID format" });
