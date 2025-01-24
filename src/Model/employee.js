@@ -12,6 +12,17 @@ const EmployeeSchema = new Schema(
       type: String,
       required: true, // Password should be mandatory for security
     },
+    connections: {
+      type: {
+        pendings: { type: [String], default: [] },
+        accepted: { type: [String], default: [] },
+        blocked: { type: [String], default: [] },
+      },
+    },
+    posts:{
+      type: [String],
+      default: []
+    },
     imageUrl: {
       type: String,
       default: "NOT SET", // Default value if no image is provided

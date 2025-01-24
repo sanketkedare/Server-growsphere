@@ -24,6 +24,17 @@ const InvesterSchema = new Schema(
       type: String, // Optional field for investor's name
       default: "NOT SET",
     },
+    connections: {
+      type: {
+        pendings: { type: [String], default: [] },
+        accepted: { type: [String], default: [] },
+        blocked: { type: [String], default: [] },
+      },
+    },
+    posts:{
+      type: [String],
+      default: []
+    },
     imageUrl: {
       type: String, // URL for the investor's profile picture
       default: "NOT SET",

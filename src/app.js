@@ -1,9 +1,12 @@
 const express = require('express');
 const userRouter = require('./Routes/userRoutes');
 const cors = require('cors');
-const companyRouter = require('./Routes/companyRouter');
+const companyRouter = require('./Routes/companyRouters');
 const investmentsRouter = require('./Routes/investmentsRoutes');
 const investerRouter = require('./Routes/investerRoutes');
+const passwordController = require('./Controller/passwordController');
+const searchRouter = require('./Routes/searchRoutes');
+const postRouter = require('./Routes/postRoutes');
 const app = express();
 
 app.use(express.json())
@@ -29,5 +32,9 @@ app.use('/user', userRouter);
 app.use('/company', companyRouter);
 app.use('/invester', investerRouter)
 app.use('/investments', investmentsRouter);
+app.use('/search', searchRouter)
+app.use('/posts', postRouter)
+
+app.post('/validate-password', passwordController);
 
 module.exports = app;

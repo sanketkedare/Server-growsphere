@@ -16,11 +16,6 @@ const getInvestmentsByCompany = async (req, res) => {
     const investments = await Investments.find({
       "investmentNumber.companyId": companyId,
     });
-    if (investments.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No investments found for this company" });
-    }
     res.status(200).json(investments);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch investments", error });
@@ -33,11 +28,6 @@ const getInvestmentsByInvester = async (req, res) => {
     const investments = await Investments.find({
       "investmentNumber.investorId": investorId,
     });
-    if (investments.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No investments found for this investor" });
-    }
     res.status(200).json(investments);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch investments", error });
