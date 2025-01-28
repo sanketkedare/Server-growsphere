@@ -16,7 +16,6 @@ const suggestionByName = async (req, res) => {
     const employee = await getEmployees();
 
     const { name } = req.body;
-    console.log(name)
 
     // Initialize the response structure
     const suggestion = { investers: [], company: [], employee: [] };

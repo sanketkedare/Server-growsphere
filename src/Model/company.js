@@ -28,6 +28,7 @@ const CompanySchema = new Schema(
     },
     connections: {
       type: {
+        requests: {type: [String], default: [] },
         pendings: { type: [String], default: [] },
         accepted: { type: [String], default: [] },
         blocked: { type: [String], default: [] },

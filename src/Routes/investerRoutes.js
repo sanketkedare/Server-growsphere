@@ -5,6 +5,18 @@ const investerRouter = express.Router();
 
 const mongoose = require("mongoose");
 
+investerRouter.get('/', async(req,res)=>{
+  try 
+  {
+    const data = await Invester.find({},{password: 0})
+    res.status(200).json(data);
+    
+  } 
+  catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+})
+
 investerRouter.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;

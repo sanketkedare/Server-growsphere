@@ -7,6 +7,8 @@ const investerRouter = require('./Routes/investerRoutes');
 const passwordController = require('./Controller/passwordController');
 const searchRouter = require('./Routes/searchRoutes');
 const postRouter = require('./Routes/postRoutes');
+const employeeRouter = require('./Routes/employeeRouter');
+const communityRouter = require('./Routes/communityRoutes');
 const app = express();
 
 app.use(express.json())
@@ -30,10 +32,12 @@ app.get('/', (req, res) => {
 
 app.use('/user', userRouter);
 app.use('/company', companyRouter);
-app.use('/invester', investerRouter)
+app.use('/invester', investerRouter);
+app.use('/employee', employeeRouter);
 app.use('/investments', investmentsRouter);
 app.use('/search', searchRouter)
 app.use('/posts', postRouter)
+app.use('/community', communityRouter);
 
 app.post('/validate-password', passwordController);
 
