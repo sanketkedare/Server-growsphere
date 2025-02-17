@@ -57,11 +57,6 @@ const CompanySchema = new Schema(
     started_year: {
       type: Number,
       default: null,
-      validate: {
-        validator: (v) =>
-          v === null || (v > 1800 && v <= new Date().getFullYear()),
-        message: "Enter a valid year.",
-      },
     },
     type_of_company: {
       type: String,
